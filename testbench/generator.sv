@@ -1,11 +1,7 @@
-`ifndef _transaction
-`include "./transaction.sv"
-`endif
-
 class Generator;
 
-	Transaction 	trxn;
-	mailbox 	mbx;
+	Transaction   trxn;
+	mailbox 	     mbx;
 
 	function new (mailbox mbx);
 		this.mbx = mbx;
@@ -19,22 +15,14 @@ class Generator;
 	task run();
 		repeat(totalPacket)
 		begin
-			trxn = new();			// creating new trxn object	
-
+			trxn = new();			            // creating new trxn object	
 			$display("+------------------------STARTOF TRXN------------------------+");
-
-			trxn.randomize();		// randomizing field values of trxn object
-
-			mbx.put(trxn);			// putting trxn object into the mailbox	
-
+			assert(trxn.randomize());		   // randomizing field values of trxn object
+			mbx.put(trxn);			            // putting trxn object into the mailbox	
 			trxn.displayData(packetCount);	// passing packetCount as argument
-
-			packetCount++;			// incrementing the packetCount
-
+			packetCount++;			            // incrementing the packetCount
 			#(finiteDelay);
-
 			$display("+-------------------------ENDOF TRXN-------------------------+");
 		end	
-
 	endtask: run
 endclass: Generator

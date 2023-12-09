@@ -1,5 +1,4 @@
-`include "./defines.sv"
-
+//`include "../defines/defines.sv"
 class Transaction;
 
 	// fields having random values
@@ -13,7 +12,7 @@ class Transaction;
 	endfunction: trxnDisplay
 
 	function void displayData(int packetCount);
-		$display("TRXN[%0d] :: a_in = 0x%0h, b_in = 0x%1h, opcode_in = 0x%0h", packetCount, a_in, b_in, opcode_in);
+		$display("TRXN[%0d] :: a_in = 0x%0h, b_in = 0x%0h, opcode_in = 0x%0h", packetCount, a_in, b_in, opcode_in);
 	endfunction: displayData
 	
 	// random constraints

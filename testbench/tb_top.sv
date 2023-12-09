@@ -1,26 +1,28 @@
-`include "./generator.sv"
-`include "./driver.sv"
-`include "./interface.sv"
+`include "C:/Users/niles/OneDrive/sysv_codes/practice/Day03/design/alu_8bit.sv"
+//`include "C:/Users/niles/OneDrive/sysv_codes/practice/Day03/testbench/generator.sv"
+//`include "C:/Users/niles/OneDrive/sysv_codes/practice/Day03/testbench/driver.sv"
+//`include "C:/Users/niles/OneDrive/sysv_codes/practice/Day03/testbench/interface.sv"
+
 
 module tb_top();
+   mailbox     mbx;
+   Generator   gen;
+   Driver      drv ;
+         
+   alu_ifc ifc(); // nasty error
+   alu_8bit D1 (ifc.DUT);
 
-	mailbox 	mbx;
-	Generator 	gen;
-	Driver 		drv;
-
-	// connecting interface with DUT defined in the interface
-	alu_8bit U0 (alu_ifc.DUT);
-
-	initial begin
-		mbx = new();
-		gen = new(mbx);
-		drv = new(mbx);
-
-		fork
-			gen.run();
-			drv.run();
-		join_none
-	end
-
-
+   initial begin
+      mbx = new();
+      gen = new(mbx);
+      drv = new(mbx);
+      fork
+         gen.run();
+         drv.run();
+      join_none
+   end
+   
+   initial begin
+      $display("Dry run");
+   end
 endmodule: tb_top

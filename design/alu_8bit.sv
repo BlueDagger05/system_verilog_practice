@@ -19,36 +19,33 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`include "../testbench/defines.sv"
-module alu_8bit(
-   output reg [`DATA_WIDTH : 0]    result_out,
-   input  [`DATA_WIDTH -1:0]   a_in, b_in,
-   input  [`OPCODE_WIDTH -1:0] opcode_in
-);
+`include "../testbench/interface.sv"
+//`include "../defines/defines.sv"
+module alu_8bit(alu_ifc ifc);
 
 always_comb
 begin: arithmetic_operation
-   case(opcode_in)
-    	TFRA :	result_out = a_in;
-        ADD  :	result_out = a_in + b_in;
-        SUB  :	result_out = a_in - b_in; 
-        INCRA:	result_out = a_in + 1'b1;
-        DECRA:	result_out = a_in - 1'b1;
-        INCRB:	result_out = b_in + 1'b1;
-        DECRB:	result_out = b_in - 1'b1;
-        TFRB :	result_out = a_in;
-	default: result_out = a_in;
+   case({!ifc.opcode_in[`OPCODE_WIDTH-1], ifc.opcode_in[`OPCODE_WIDTH-2:0]})
+    	  TFRA :	ifc.result_out = ifc.a_in;
+        ADD  :	ifc.result_out = ifc.a_in + ifc.b_in;
+        SUB  :	ifc.result_out = ifc.a_in - ifc.b_in; 
+        INCRA:	ifc.result_out = ifc.a_in + 1'b1;
+        DECRA:	ifc.result_out = ifc.a_in - 1'b1;
+        INCRB:	ifc.result_out = ifc.b_in + 1'b1;
+        DECRB:	ifc.result_out = ifc.b_in - 1'b1;
+        TFRB :	ifc.result_out = ifc.a_in;
+	default: ifc.result_out = ifc.a_in;
    endcase
 end: arithmetic_operation
 
 always_comb
 begin: logical_operation
-	case(opcode_in)	
-        OR_G :	result_out = a_in | b_in;
-        XOR_G:	result_out = a_in ^ b_in;
-        AND_G:	result_out = a_in & b_in;
-        NOT_G:	result_out = ~a_in;
-	default: result_out = ~a_in;
+	case({ifc.opcode_in[`OPCODE_WIDTH-1], ifc.opcode_in[`OPCODE_WIDTH-2:0]})	
+        OR_G :	ifc.result_out = ifc.a_in | ifc.b_in;
+        XOR_G:	ifc.result_out = ifc.a_in ^ ifc.b_in;
+        AND_G:	ifc.result_out = ifc.a_in & ifc.b_in;
+        NOT_G:	ifc.result_out = ~ifc.a_in;
+	     default: ifc.result_out = ~ifc.a_in;
 endcase
 
 end: logical_operation

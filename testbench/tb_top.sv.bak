@@ -1,0 +1,10 @@
+`include "C:/Users/niles/OneDrive/sysv_codes/practice/Day03/testbench/interface.sv"
+//`include "C:/Users/niles/OneDrive/sysv_codes/practice/Day03/design/alu_8bit.sv"
+module tb_top;
+   alu_ifc ifc;
+   alu_8bit D1 (ifc.DUT);
+
+   initial begin
+      $display("Dry run");
+   end
+endmodule: tb_top
